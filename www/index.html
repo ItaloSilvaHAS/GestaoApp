@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo System - Awakening</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Tela de Awakening -->
+    <div id="awakening-screen" class="screen">
+        <div class="awakening-container">
+            <h1 class="awakening-title">AWAKENING</h1>
+            <div class="awakening-line"></div>
+            <p class="awakening-subtitle">SISTEMA DE IDENTIFICAÇÃO</p>
+            <div class="name-input-container">
+                <input type="text" id="player-name-input" placeholder="DIGITE SEU NOME" maxlength="20" class="name-input">
+            </div>
+            <button id="awakening-btn" class="glow-button">CONFIRMAR</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="dashboard" class="screen hidden">
+        <div id="system-overlay">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="status-label">STATUS</div>
+                <div class="player-info">
+                    <div class="player-name" id="player-name-display">USUÁRIO</div>
+                    <div class="rank-level">
+                        <span class="rank-label">RANK: <span id="rank-display">E-RANK</span></span>
+                        <span class="level-label">NÍVEL: <span id="level-display">1</span></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Barra de XP -->
+            <div class="xp-section">
+                <div class="xp-label">EXPERIÊNCIA</div>
+                <div class="exp-bar-container">
+                    <div id="exp-bar" class="exp-bar"></div>
+                    <div class="exp-text"><span id="current-xp">0</span> / <span id="max-xp">100</span> XP</div>
+                </div>
+            </div>
+
+            <!-- Seção de Atributos -->
+            <div class="attributes-section">
+                <div class="section-title">ATRIBUTOS</div>
+                <div class="points-available" id="points-available-container">
+                    PONTOS DISPONÍVEIS: <span id="available-points">0</span>
+                </div>
+                <div class="attributes-grid">
+                    <div class="attribute-item">
+                        <span class="attr-label">STR</span>
+                        <span class="attr-value" id="attr-str">10</span>
+                        <button class="attr-btn hidden" id="btn-str" onclick="increaseAttribute('STR')">+</button>
+                    </div>
+                    <div class="attribute-item">
+                        <span class="attr-label">VIT</span>
+                        <span class="attr-value" id="attr-vit">10</span>
+                        <button class="attr-btn hidden" id="btn-vit" onclick="increaseAttribute('VIT')">+</button>
+                    </div>
+                    <div class="attribute-item">
+                        <span class="attr-label">AGI</span>
+                        <span class="attr-value" id="attr-agi">10</span>
+                        <button class="attr-btn hidden" id="btn-agi" onclick="increaseAttribute('AGI')">+</button>
+                    </div>
+                    <div class="attribute-item">
+                        <span class="attr-label">INT</span>
+                        <span class="attr-value" id="attr-int">10</span>
+                        <button class="attr-btn hidden" id="btn-int" onclick="increaseAttribute('INT')">+</button>
+                    </div>
+                    <div class="attribute-item">
+                        <span class="attr-label">SEN</span>
+                        <span class="attr-value" id="attr-sen">10</span>
+                        <button class="attr-btn hidden" id="btn-sen" onclick="increaseAttribute('SEN')">+</button>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de Radar -->
+                <div class="radar-chart-container">
+                    <canvas id="radar-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Sistema de Missões Diárias -->
+            <div class="quest-section">
+                <div class="section-title">DAILY QUEST: PREPARATION FOR GREATNESS</div>
+                <div class="quests-list">
+                    <div class="quest-item">
+                        <div class="quest-info">
+                            <span class="quest-name">FLEXÕES</span>
+                            <span class="quest-progress" id="quest-pushups">0 / 100</span>
+                        </div>
+                        <div class="quest-controls">
+                            <button class="quest-btn" onclick="updateQuest('pushups', 10)">+10</button>
+                            <div class="quest-bar-container">
+                                <div class="quest-bar" id="quest-bar-pushups"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quest-item">
+                        <div class="quest-info">
+                            <span class="quest-name">ABDOMINAIS</span>
+                            <span class="quest-progress" id="quest-situps">0 / 100</span>
+                        </div>
+                        <div class="quest-controls">
+                            <button class="quest-btn" onclick="updateQuest('situps', 10)">+10</button>
+                            <div class="quest-bar-container">
+                                <div class="quest-bar" id="quest-bar-situps"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quest-item">
+                        <div class="quest-info">
+                            <span class="quest-name">AGACHAMENTOS</span>
+                            <span class="quest-progress" id="quest-squats">0 / 100</span>
+                        </div>
+                        <div class="quest-controls">
+                            <button class="quest-btn" onclick="updateQuest('squats', 10)">+10</button>
+                            <div class="quest-bar-container">
+                                <div class="quest-bar" id="quest-bar-squats"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quest-item">
+                        <div class="quest-info">
+                            <span class="quest-name">CORRIDA</span>
+                            <span class="quest-progress" id="quest-running">0.0 / 10.0 km</span>
+                        </div>
+                        <div class="quest-controls">
+                            <button class="quest-btn" onclick="updateQuest('running', 1)">+1km</button>
+                            <div class="quest-bar-container">
+                                <div class="quest-bar" id="quest-bar-running"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="claim-reward-btn" class="claim-reward-btn hidden" onclick="claimReward()">CLAIM REWARD</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animação QUEST CLEARED -->
+    <div id="quest-cleared-animation" class="quest-cleared-animation hidden">
+        <div class="quest-cleared-text">QUEST CLEARED</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
